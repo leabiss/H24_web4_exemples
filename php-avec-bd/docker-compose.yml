@@ -1,0 +1,28 @@
+services:
+  site:
+    container_name: local-site
+    build: .
+    ports:
+      - 8080:80
+    volumes:
+      - ./public_html:/var/www/html
+
+  db:
+    container_name: local-db
+    image: mariadb:11.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=database
+    ports:
+      - 3307:3306
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    container_name: local-phpmyadmin
+    image: phpmyadmin:5.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - PMA_HOST=db
+    ports:
+      - 8081:80
